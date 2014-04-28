@@ -12,6 +12,7 @@ import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,6 +25,7 @@ public class MessageActivity extends Activity {
 
 	private TextView textView;
 	private ProgressBar progressBar;
+	private ProgressDialog progressDialog;
 	private static final String FILE_NAME = "text.txt";
 
 	@Override
@@ -33,6 +35,11 @@ public class MessageActivity extends Activity {
 
 		textView = (TextView) findViewById(R.id.textView1);
 		progressBar  = (ProgressBar) findViewById(R.id.progressBar1);
+		progressDialog = new ProgressDialog(this);
+		progressDialog.setTitle("SimpleUI");
+		progressDialog.setMessage("Loading...");
+		progressDialog.setCancelable(false);
+		progressDialog.show();
 
 		String text = getIntent().getStringExtra("text");
 		boolean isChecked = getIntent().getBooleanExtra("checkBox", false); 
@@ -56,6 +63,7 @@ public class MessageActivity extends Activity {
 						content += msg.getString("text") + "\n";
 					textView.setText(content);
 					progressBar.setVisibility(View.GONE);  // View.INVISIBLE, View.VISIBLE  
+					progressDialog.dismiss();
 				} else
 					e.printStackTrace();
 			}
