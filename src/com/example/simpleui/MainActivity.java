@@ -26,7 +26,9 @@ import android.os.Build;
 
 import com.parse.Parse;
 import com.parse.ParseAnalytics;
+import com.parse.ParseInstallation;
 import com.parse.ParseObject;
+import com.parse.PushService;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -42,6 +44,8 @@ public class MainActivity extends ActionBarActivity {
         }
         
         Parse.initialize(this, "CgPkaJbiKHrCUgyeaYOmrHOyRxFjc75xHstT7ngm", "G5tkkwn4QN8r0m6hxkhqgbApvDLHzmPkW1T5t0wf");
+        PushService.setDefaultPushCallback(this, MainActivity.class);
+        ParseInstallation.getCurrentInstallation().saveInBackground();
         
         /*ParseObject testObject = new ParseObject("TestObject");
         testObject.put("foo", "bar");
