@@ -28,6 +28,7 @@ import com.parse.Parse;
 import com.parse.ParseAnalytics;
 import com.parse.ParseInstallation;
 import com.parse.ParseObject;
+import com.parse.ParsePush;
 import com.parse.PushService;
 
 public class MainActivity extends ActionBarActivity {
@@ -45,8 +46,9 @@ public class MainActivity extends ActionBarActivity {
         
         Parse.initialize(this, "CgPkaJbiKHrCUgyeaYOmrHOyRxFjc75xHstT7ngm", "G5tkkwn4QN8r0m6hxkhqgbApvDLHzmPkW1T5t0wf");
         PushService.setDefaultPushCallback(this, MainActivity.class);
-        ParseInstallation.getCurrentInstallation().saveInBackground();
-        
+        ParseInstallation.getCurrentInstallation().saveInBackground(); // Save the current Installation to Parse.
+        PushService.subscribe(this, "all", MainActivity.class); // When users indicate they are Giants fans, we subscribe them to that channel.
+             
         /*ParseObject testObject = new ParseObject("TestObject");
         testObject.put("foo", "bar");
         testObject.saveInBackground();*/
@@ -94,6 +96,12 @@ public class MainActivity extends ActionBarActivity {
 			Toast.makeText(getActivity(), text, Toast.LENGTH_SHORT).show(); // show editText text value on the screen
 			editText.getText().clear(); // clear editText text value
 			//editText.setText(""); // clear editText text value
+			
+			// Sending Pushes to Channels
+			ParsePush push = new ParsePush();
+			push.setChannel("all");
+			push.setMessage(text);
+			push.sendInBackground();
 			
 			Intent intent = new Intent();
 			intent.setClass(getActivity(), MessageActivity.class);
